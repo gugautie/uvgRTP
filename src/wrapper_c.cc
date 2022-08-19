@@ -43,12 +43,11 @@ uvgrtp_destroy_session(void* uvgrtp_context, void* uvgrtp_session)
 }
 
 void
-uvgrtp_create_stream(void* uvgrtp_session, void** uvgrtp_stream, uint16_t local_port, uint16_t remote_port, 
-    int rce_flags)
+uvgrtp_create_stream(void* uvgrtp_session, void** uvgrtp_stream, uint16_t local_port, uint16_t remote_port, int fmt, int rce_flags, int fps)
 {
-    rtp_format_t fmt = RTP_FORMAT_H265;
     uvgrtp::session* uvg_sess_ptr = (uvgrtp::session*)uvgrtp_session;
-    uvgrtp::media_stream *stream = uvg_sess_ptr->create_stream(local_port, remote_port, fmt, rce_flags);
+    uvgrtp::media_stream *stream = uvg_sess_ptr->create_stream(local_port, remote_port, (rtp_format_t) fmt, rce_flags);
+    stream->configure_ctx(RCC_FPS_ENUMERATOR, fps);
     *uvgrtp_stream = stream;
 }
 
